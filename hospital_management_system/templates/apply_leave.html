@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Apply Leave</title>
+
+    <style>
+
+        body{
+            background:#f1f5f9;
+            font-family:Arial;
+        }
+
+        .form-container{
+
+            width:500px;
+            margin:auto;
+            margin-top:40px;
+
+            background:white;
+            padding:30px;
+
+            border-radius:15px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        input, select, textarea{
+
+            width:100%;
+            padding:14px;
+
+            margin-bottom:20px;
+
+            border:1px solid #ccc;
+            border-radius:10px;
+        }
+
+        textarea{
+            height:120px;
+        }
+
+        button{
+
+            width:100%;
+            padding:15px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:10px;
+
+            font-size:16px;
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>Apply Leave</h1>
+
+        <form method="POST">
+
+            <input type="text" name="employee_name" placeholder="Employee Name" required>
+
+            <input type="text" name="employee_role" placeholder="Employee Role" required>
+
+            <select name="leave_type" required>
+
+                <option value="">Select Leave Type</option>
+
+                <option>Sick Leave</option>
+                <option>Casual Leave</option>
+                <option>Emergency Leave</option>
+                <option>Vacation</option>
+
+            </select>
+
+            <input type="date" name="start_date" required>
+
+            <input type="date" name="end_date" required>
+
+            <textarea name="reason" placeholder="Reason"></textarea>
+
+            <select name="approval_status" required>
+
+                <option value="">Approval Status</option>
+
+                <option>Pending</option>
+                <option>Approved</option>
+                <option>Rejected</option>
+
+            </select>
+
+            <button type="submit">
+                Submit Leave
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add EMR</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f7fc;
+            padding:30px;
+        }
+
+        .container{
+            width:80%;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1{
+            color:#007bff;
+            margin-bottom:20px;
+        }
+
+        .patient-box{
+            background:#eef4ff;
+            padding:15px;
+            border-radius:8px;
+            margin-bottom:25px;
+        }
+
+        label{
+            font-weight:bold;
+            display:block;
+            margin-top:15px;
+            margin-bottom:8px;
+        }
+
+        textarea,
+        input[type="file"]{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        textarea{
+            resize:vertical;
+            min-height:120px;
+        }
+
+        button{
+            margin-top:25px;
+            background:#007bff;
+            color:white;
+            border:none;
+            padding:14px 25px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+
+        .back-btn{
+            text-decoration:none;
+            background:#28a745;
+            color:white;
+            padding:10px 20px;
+            border-radius:6px;
+            float:right;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/patient_dashboard" class="back-btn">
+        Back
+    </a>
+
+    <h1>Electronic Medical Record</h1>
+
+    <div class="patient-box">
+
+        <h3>Patient Information</h3>
+
+        <p><strong>Patient ID:</strong> {{ patient[1] }}</p>
+        <p><strong>Name:</strong> {{ patient[2] }}</p>
+        <p><strong>Disease:</strong> {{ patient[8] }}</p>
+        <p><strong>Doctor Assigned:</strong> {{ patient[9] }}</p>
+
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <label>Diagnosis History</label>
+
+        <textarea
+            name="diagnosis_history"
+            placeholder="Enter diagnosis history..."
+            required
+        ></textarea>
+
+        <label>Treatment History</label>
+
+        <textarea
+            name="treatment_history"
+            placeholder="Enter treatment history..."
+            required
+        ></textarea>
+
+        <label>Prescriptions</label>
+
+        <textarea
+            name="prescriptions"
+            placeholder="Enter prescriptions..."
+            required
+        ></textarea>
+
+        <label>Allergies</label>
+
+        <textarea
+            name="allergies"
+            placeholder="Enter allergies..."
+        ></textarea>
+
+        <label>Reports</label>
+
+        <textarea
+            name="reports"
+            placeholder="Enter medical reports..."
+        ></textarea>
+
+        <label>Upload X-ray / MRI / PDF Reports</label>
+
+        <input
+            type="file"
+            name="xray_mri"
+            accept=".png,.jpg,.jpeg,.pdf"
+        >
+
+        <button type="submit">
+            Save EMR Record
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Add Shift</title>
+
+    <style>
+
+        body{
+            background:#f1f5f9;
+            font-family:Arial;
+        }
+
+        .form-container{
+
+            width:500px;
+            margin:auto;
+            margin-top:40px;
+
+            background:white;
+            padding:30px;
+
+            border-radius:15px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        input, select{
+
+            width:100%;
+            padding:14px;
+
+            margin-bottom:20px;
+
+            border:1px solid #ccc;
+            border-radius:10px;
+        }
+
+        button{
+
+            width:100%;
+            padding:15px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:10px;
+
+            font-size:16px;
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>Add Shift</h1>
+
+        <form method="POST">
+
+            <input type="text" name="employee_name" placeholder="Employee Name" required>
+
+            <input type="text" name="employee_role" placeholder="Employee Role" required>
+
+            <input type="date" name="shift_date" required>
+
+            <input type="text" name="shift_time" placeholder="Shift Time (9AM - 5PM)" required>
+
+            <input type="text" name="department" placeholder="Department" required>
+
+            <button type="submit">
+                Save Shift
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

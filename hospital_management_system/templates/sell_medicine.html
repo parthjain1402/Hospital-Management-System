@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sell Medicine</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f1f5f9;
+        }
+
+        .container{
+
+            width:500px;
+            background:white;
+
+            margin:40px auto;
+            padding:30px;
+
+            border-radius:10px;
+
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1{
+
+            text-align:center;
+            margin-bottom:20px;
+            color:#2563eb;
+        }
+
+        select,
+        input,
+        textarea{
+
+            width:100%;
+            padding:12px;
+
+            margin-top:10px;
+            margin-bottom:20px;
+
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+
+            width:100%;
+            padding:15px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:5px;
+
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Sell Medicine</h1>
+
+        <form method="POST">
+
+            <label>Select Patient</label>
+
+            <select name="patient_id" required>
+
+                {% for patient in patients %}
+
+                <option value="{{ patient[0] }}">
+                    {{ patient[1] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <input type="text"
+                   name="patient_name"
+                   placeholder="Patient Name"
+                   required>
+
+            <label>Select Medicine</label>
+
+            <select name="medicine_name" required>
+
+                {% for medicine in medicines %}
+
+                <option value="{{ medicine[0] }}">
+                    {{ medicine[0] }} |
+                    Stock : {{ medicine[1] }} |
+                    ₹ {{ medicine[2] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <input type="number"
+                   name="quantity"
+                   placeholder="Quantity"
+                   required>
+
+            <textarea name="prescription"
+                      rows="5"
+                      placeholder="Prescription Details"></textarea>
+
+            <button type="submit">
+                Sell Medicine
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

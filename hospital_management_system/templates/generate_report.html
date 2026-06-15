@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Generate Report</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================== */
+
+        .topbar{
+
+            background:#0f172a;
+            color:white;
+
+            padding:20px;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logout-btn{
+
+            background:red;
+            color:white;
+
+            border:none;
+
+            padding:12px 20px;
+
+            border-radius:10px;
+
+            cursor:pointer;
+        }
+
+        .logout-btn:hover{
+            background:darkred;
+        }
+
+        /* =========================
+           CONTAINER
+        ========================== */
+
+        .container{
+
+            width:50%;
+
+            margin:auto;
+
+            margin-top:50px;
+
+            background:white;
+
+            padding:40px;
+
+            border-radius:15px;
+
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .container h1{
+
+            text-align:center;
+
+            margin-bottom:30px;
+
+            color:#0f172a;
+        }
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-group{
+
+            margin-bottom:20px;
+        }
+
+        .form-group label{
+
+            display:block;
+
+            margin-bottom:8px;
+
+            font-weight:bold;
+
+            color:#334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea{
+
+            width:100%;
+
+            padding:14px;
+
+            border:1px solid #cbd5e1;
+
+            border-radius:10px;
+
+            outline:none;
+
+            font-size:15px;
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .btn{
+
+            width:100%;
+
+            padding:15px;
+
+            border:none;
+
+            border-radius:10px;
+
+            background:#2563eb;
+
+            color:white;
+
+            font-size:18px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+        }
+
+        .btn:hover{
+            background:#1d4ed8;
+        }
+
+        .back-btn{
+
+            margin-top:15px;
+
+            background:#475569;
+        }
+
+        .back-btn:hover{
+            background:#334155;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media(max-width:768px){
+
+            .container{
+                width:95%;
+            }
+
+            .topbar{
+
+                flex-direction:column;
+
+                gap:20px;
+
+                text-align:center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+         TOPBAR
+    ========================== -->
+
+    <div class="topbar">
+
+        <h1>
+            Generate Analytics Report
+        </h1>
+
+        <a href="{{ url_for('logout') }}">
+
+            <button class="logout-btn">
+                Logout
+            </button>
+
+        </a>
+
+    </div>
+
+    <!-- =========================
+         FORM CONTAINER
+    ========================== -->
+
+    <div class="container">
+
+        <h1>
+            Report Generation Form
+        </h1>
+
+        <form action="{{ url_for('generate_report') }}"
+              method="GET">
+
+            <div class="form-group">
+
+                <label>
+                    Report Type
+                </label>
+
+                <select name="report_type" required>
+
+                    <option value="">
+                        Select Report
+                    </option>
+
+                    <option value="Revenue Analytics">
+                        Revenue Analytics
+                    </option>
+
+                    <option value="Patient Statistics">
+                        Patient Statistics
+                    </option>
+
+                    <option value="Doctor Performance">
+                        Doctor Performance
+                    </option>
+
+                    <option value="Disease Trends">
+                        Disease Trends
+                    </option>
+
+                    <option value="Complete Hospital Analytics">
+                        Complete Hospital Analytics
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Report Description
+                </label>
+
+                <textarea
+                    name="remarks"
+                    rows="5"
+                    placeholder="Enter report remarks or notes..."></textarea>
+
+            </div>
+
+            <button type="submit"
+                    class="btn">
+
+                Generate Report
+
+            </button>
+
+        </form>
+
+        <a href="{{ url_for('reports_dashboard') }}">
+
+            <button class="btn back-btn">
+
+                Back To Reports Dashboard
+
+            </button>
+
+        </a>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Equipment</title>
+
+    <style>
+
+        body{
+            background:#f1f5f9;
+            font-family:Arial;
+        }
+
+        .form-container{
+
+            width:50%;
+            margin:auto;
+            margin-top:40px;
+
+            background:white;
+            padding:30px;
+
+            border-radius:15px;
+        }
+
+        input,
+        select{
+
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+        }
+
+        button{
+
+            width:100%;
+            padding:15px;
+            margin-top:20px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:10px;
+
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>Add Equipment</h1>
+
+        <form method="POST">
+
+            <input type="text" name="equipment_name" placeholder="Equipment Name" required>
+
+            <input type="text" name="category" placeholder="Category" required>
+
+            <input type="text" name="department" placeholder="Department" required>
+
+            <input type="number" name="quantity" placeholder="Quantity" required>
+
+            <select name="condition_status">
+
+                <option>Excellent</option>
+                <option>Good</option>
+                <option>Damaged</option>
+
+            </select>
+
+            <input type="date" name="purchase_date" required>
+
+            <input type="date" name="warranty_expiry" required>
+
+            <select name="equipment_status">
+
+                <option>Active</option>
+                <option>Inactive</option>
+                <option>Under Maintenance</option>
+
+            </select>
+
+            <button type="submit">
+                Add Equipment
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

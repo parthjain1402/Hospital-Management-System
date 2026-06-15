@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Generate Invoice</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h2>🏥 HMS</h2>
+
+        <img src="/{{ session['image'] }}"
+             alt="Profile"
+             class="profile-img">
+
+        <h3>{{ session['user'] }}</h3>
+
+        <p>{{ session['role'] }}</p>
+
+        <a href="{{ url_for('dashboard') }}">
+            📊 Dashboard
+        </a>
+
+        <a href="{{ url_for('patient_dashboard') }}">
+            🧑‍⚕️ Patients
+        </a>
+
+        <a href="{{ url_for('doctor_dashboard') }}">
+            👨‍⚕️ Doctors
+        </a>
+
+        <a href="{{ url_for('appointments') }}">
+            📅 Appointments
+        </a>
+
+        <a href="{{ url_for('billing_dashboard') }}">
+            💳 Billing
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <div class="form-container">
+
+            <h1>Generate Invoice</h1>
+
+            <form method="POST">
+
+                <input type="text"
+                    name="patient_id"
+                    value="{{ selected_patient_id }}"
+                    readonly
+                    required>
+
+                <input type="text"
+                    name="patient_name"
+                    value="{{ selected_patient_name }}"
+                    readonly
+                    required>
+
+                <input type="number"
+                       step="0.01"
+                       name="treatment_cost"
+                       placeholder="Treatment Cost"
+                       required>
+
+                <input type="number"
+                       step="0.01"
+                       name="medicine_cost"
+                       placeholder="Medicine Cost"
+                       required>
+
+                <input type="number"
+                       step="0.01"
+                       name="room_charges"
+                       placeholder="Room Charges"
+                       required>
+
+                <input type="number"
+                       step="0.01"
+                       name="gst_percentage"
+                       placeholder="GST Percentage"
+                       required>
+
+                <select name="insurance_claim">
+
+                    <option value="No">
+                        Insurance Claim - No
+                    </option>
+
+                    <option value="Yes">
+                        Insurance Claim - Yes
+                    </option>
+
+                </select>
+
+                <select name="insurance_status">
+
+                    <option value="Pending">
+                        Insurance Pending
+                    </option>
+
+                    <option value="Approved">
+                        Insurance Approved
+                    </option>
+
+                    <option value="Rejected">
+                        Insurance Rejected
+                    </option>
+
+                </select>
+
+                <select name="payment_method">
+
+                    <option value="Cash">Cash</option>
+
+                    <option value="UPI">UPI</option>
+
+                    <option value="Card">Card</option>
+
+                    <option value="Net Banking">
+                        Net Banking
+                    </option>
+
+                </select>
+
+                <select name="payment_status">
+
+                    <option value="Paid">Paid</option>
+
+                    <option value="Pending">Pending</option>
+
+                    <option value="Failed">Failed</option>
+
+                </select>
+
+                <select name="refund_status">
+
+                    <option value="No Refund">
+                        No Refund
+                    </option>
+
+                    <option value="Refunded">
+                        Refunded
+                    </option>
+
+                    <option value="Processing">
+                        Processing
+                    </option>
+
+                </select>
+
+                <button type="submit">
+                    Generate Invoice
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

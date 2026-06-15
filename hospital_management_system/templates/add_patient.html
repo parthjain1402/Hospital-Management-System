@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Patient</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+
+    <h1>Add Patient</h1>
+
+    <form method="POST">
+
+        <input type="text" name="full_name" placeholder="Full Name" required>
+        <input type="number" name="age" placeholder="Age" required>
+
+        <select name="gender" required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+
+        <input type="text" name="phone" placeholder="Phone" required>
+        <textarea name="address" placeholder="Address"></textarea>
+        <input type="text" name="blood_group" placeholder="Blood Group">
+        <input type="text" name="disease" placeholder="Disease">
+        <input type="text" name="doctor_assigned" placeholder="Doctor Assigned">
+
+        <select name="admission_type">
+            <option>OPD</option>
+            <option>IPD</option>
+            <option>Emergency</option>
+        </select>
+
+        <label>Admission Date</label>
+        <input type="date" name="admission_date">
+
+        <label>Discharge Date</label>
+        <input type="date" name="discharge_date">
+
+        <input type="text" name="emergency_contact" placeholder="Emergency Contact">
+        <input type="text" name="insurance_provider" placeholder="Insurance Provider">
+        <input type="text" name="insurance_number" placeholder="Insurance Number">
+
+        <textarea name="medical_history" placeholder="Medical History"></textarea>
+
+        <button type="submit">Add Patient</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

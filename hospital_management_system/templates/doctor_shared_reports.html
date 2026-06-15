@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Shared Reports</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f1f5f9;
+            padding:30px;
+        }
+
+        .report-card{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            margin-bottom:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        iframe{
+            width:100%;
+            height:700px;
+            border:none;
+            border-radius:10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Patient Shared Reports</h1>
+
+    {% if reports %}
+
+        {% for report in reports %}
+
+        <div class="report-card">
+
+            <h3>{{ report['report_name'] }}</h3>
+
+            <iframe
+                src="{{ url_for(
+                    'view_shared_report',
+                    filename=report['file_name']
+                ) }}">
+            </iframe>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No Reports Shared</p>
+
+    {% endif %}
+
+</body>
+
+</html>

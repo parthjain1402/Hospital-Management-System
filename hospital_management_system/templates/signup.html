@@ -1,0 +1,165 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Signup</title> 
+ 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+</head> 
+<body> 
+ 
+<div class="container"> 
+ 
+    <div class="left-panel"> 
+        <h1>Create Account</h1> 
+        <p>Join Hospital Management System</p> 
+    </div> 
+ 
+    <div class="form-container"> 
+ 
+        <h2>Signup</h2> 
+ 
+        {% with messages = get_flashed_messages() %} 
+            {% if messages %} 
+                {% for message in messages %} 
+                    <div class="alert">{{ message }}</div> 
+                {% endfor %} 
+            {% endif %} 
+        {% endwith %} 
+ 
+        <form method="POST" enctype="multipart/form-data" onsubmit="return validatePassword()"> 
+ 
+            <input type="text" name="full_name" placeholder="Full Name" required> 
+ 
+            <input type="text" name="username" placeholder="Username" required> 
+ 
+            <input type="email" name="email" placeholder="Gmail Address" required> 
+ 
+            <div class="password-wrapper">
+
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password"
+                    placeholder="Create Password" 
+                    required
+                >
+            
+                <div id="password-rules">
+            
+                    <div class="rule-row">
+                        <p id="length" class="invalid">• 6+ characters</p>
+                        <p id="uppercase" class="invalid">• Uppercase</p>
+                    </div>
+            
+                    <div class="rule-row">
+                        <p id="lowercase" class="invalid">• Lowercase</p>
+                        <p id="special" class="invalid">• Special character</p>
+                    </div>
+            
+                </div>
+            
+            </div>
+ 
+            <input type="password" name="confirm_password" placeholder="Re-enter Password" required> 
+ 
+            <select name="role" required> 
+                <option value="Patient">Patient</option> 
+                <option value="Doctor">Doctor</option> 
+                <option value="Admin">Admin</option> 
+                <option value="Nurse">Nurse</option> 
+                <option value="Receptionist">Receptionist</option> 
+                <option value="Lab Technician">Lab Technician</option> 
+                <option value="Pharmacist">Pharmacist</option> 
+            </select> 
+ 
+            <input type="file" name="image" required> 
+ 
+            <button type="submit">Create Account</button> 
+ 
+        </form> 
+ 
+        <p> 
+            Already have an account? 
+            <a href="{{ url_for('login') }}">Login</a> 
+        </p> 
+ 
+    </div> 
+ 
+</div> 
+<script>
+
+    const passwordInput = document.getElementById('password');
+    const passwordRules = document.getElementById('password-rules');
+    
+    const lengthRule = document.getElementById('length');
+    const upperRule = document.getElementById('uppercase');
+    const lowerRule = document.getElementById('lowercase');
+    const specialRule = document.getElementById('special');
+    
+    passwordInput.addEventListener('focus', () => {
+        passwordRules.style.display = 'block';
+    });
+    
+    passwordInput.addEventListener('blur', () => {
+    
+        if (passwordInput.value.length === 0) {
+            passwordRules.style.display = 'none';
+        }
+    
+    });
+    
+    passwordInput.addEventListener('input', function () {
+
+    const password = passwordInput.value;
+
+    const hasLength = password.length >= 6;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    // Update UI
+    toggleRule(lengthRule, hasLength);
+    toggleRule(upperRule, hasUpper);
+    toggleRule(lowerRule, hasLower);
+    toggleRule(specialRule, hasSpecial);
+
+    // Hide rules if everything is valid
+    if (hasLength && hasUpper && hasLower && hasSpecial) {
+        passwordRules.style.display = 'none';
+    } else {
+        passwordRules.style.display = 'block';
+    }
+
+    });
+    
+    function toggleRule(element, isValid) {
+    
+        if (isValid) {
+            element.classList.remove('invalid');
+            element.classList.add('valid');
+        } else {
+            element.classList.remove('valid');
+            element.classList.add('invalid');
+        }
+    
+    }
+    
+    function validatePassword() {
+    
+        const password = passwordInput.value;
+    
+        return (
+            password.length >= 6 &&
+            /[A-Z]/.test(password) &&
+            /[a-z]/.test(password) &&
+            /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        );
+    
+    }
+    
+    </script>
+ 
+</body> 
+</html> 

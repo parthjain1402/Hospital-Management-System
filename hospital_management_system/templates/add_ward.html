@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Ward</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        .topbar{
+            background:#0f172a;
+            color:white;
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .topbar a{
+            color:white;
+            text-decoration:none;
+        }
+
+        .form-container{
+            width:40%;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            margin-bottom:20px;
+            color:#2563eb;
+        }
+
+        input, select{
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+        }
+
+        @media(max-width:768px){
+            .form-container{
+                width:90%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+    <h2>Add Ward / Bed</h2>
+
+    <a href="{{ url_for('ward_dashboard') }}">⬅ Back</a>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+
+    <h2>Assign Ward</h2>
+
+    <form method="POST">
+
+        <label>Patient ID</label>
+        <select name="patient_id" required>
+            {% for patient in patients %}
+                <option value="{{ patient[0] }}">{{ patient[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Patient Name</label>
+        <input type="text" name="patient_name" required>
+
+        <label>Ward Type</label>
+        <select name="ward_type">
+            <option>General</option>
+            <option>Private</option>
+            <option>ICU</option>
+        </select>
+
+        <label>Room Number</label>
+        <input type="text" name="room_number" required>
+
+        <label>Bed Number</label>
+        <input type="text" name="bed_number" required>
+
+        <label>Admission Status</label>
+        <select name="admission_status">
+            <option>Admitted</option>
+            <option>Pending</option>
+        </select>
+
+        <label>ICU Required</label>
+        <select name="icu_required">
+            <option>No</option>
+            <option>Yes</option>
+        </select>
+
+        <label>Admission Date</label>
+        <input type="date" name="admission_date" required>
+
+        <label>Discharge Date</label>
+        <input type="date" name="discharge_date">
+
+        <button type="submit">Assign Ward</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

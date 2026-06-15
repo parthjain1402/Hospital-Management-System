@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Reports</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f1f5f9;
+            padding:30px;
+        }
+
+        .container{
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        h2{
+            margin-bottom:25px;
+            color:#0f172a;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        table th{
+            background:#0f172a;
+            color:white;
+            padding:14px;
+            text-align:left;
+        }
+
+        table td{
+            padding:14px;
+            border-bottom:1px solid #e2e8f0;
+        }
+
+        a{
+            background:#2563eb;
+            color:white;
+            padding:8px 14px;
+            border-radius:6px;
+            text-decoration:none;
+        }
+
+        a:hover{
+            background:#1d4ed8;
+        }
+
+        .back-btn{
+
+            display:inline-block;
+            margin-bottom:20px;
+            background:#0f172a;
+            color:white;
+            padding:10px 16px;
+            border-radius:6px;
+            text-decoration:none;
+            transition:0.3s;
+        }
+
+        .back-btn:hover{
+
+            background:#1e293b;
+        }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>
+            Shared Reports of Patient ID:
+            {{ patient_id }}
+        </h2>
+        
+        <a href="{{ url_for('doctor_portal') }}"
+        class="back-btn">
+
+            ← Back To Doctor Portal
+
+        </a>
+
+
+        <table>
+
+            <tr>
+
+                <th>Report Name</th>
+                <th>Shared Date</th>
+                <th>View</th>
+
+            </tr>
+
+            {% if reports %}
+
+                {% for report in reports %}
+
+                <tr>
+
+                    <td>{{ report['report_name'] }}</td>
+
+                    <td>{{ report['shared_at'] }}</td>
+
+                    <td>
+
+                        <a href="{{ url_for(
+                            'view_shared_report',
+                            filename=report['file_name']
+                        ) }}"
+                           target="_blank">
+
+                            View Report
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="3">
+
+                        No Reports Shared Yet
+
+                    </td>
+
+                </tr>
+
+            {% endif %}
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>

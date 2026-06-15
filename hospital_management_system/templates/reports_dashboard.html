@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reports & Analytics</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================== */
+
+        .topbar{
+
+            background:#0f172a;
+            color:white;
+
+            padding:20px;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logout-btn{
+
+            background:red;
+            color:white;
+
+            border:none;
+
+            padding:12px 20px;
+
+            border-radius:10px;
+
+            cursor:pointer;
+        }
+
+        .logout-btn:hover{
+            background:darkred;
+        }
+
+        /* =========================
+           DASHBOARD CARDS
+        ========================== */
+
+        .dashboard{
+
+            width:95%;
+            margin:auto;
+            margin-top:40px;
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(250px,1fr));
+
+            gap:25px;
+        }
+
+        .card{
+
+            background:white;
+
+            padding:30px;
+
+            border-radius:15px;
+
+            text-align:center;
+
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .card h1{
+
+            color:#2563eb;
+
+            margin-bottom:10px;
+
+            font-size:35px;
+        }
+
+        .card p{
+
+            color:#475569;
+
+            font-size:20px;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .btn-section{
+
+            width:95%;
+            margin:auto;
+            margin-top:30px;
+
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        .btn{
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+
+            padding:15px 25px;
+
+            border-radius:10px;
+
+            cursor:pointer;
+
+            font-size:16px;
+        }
+
+        .btn:hover{
+            background:#1d4ed8;
+        }
+
+        /* =========================
+           TABLES
+        ========================== */
+
+        .table-container{
+
+            width:95%;
+            margin:auto;
+            margin-top:40px;
+        }
+
+        table{
+
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        table th,
+        table td{
+
+            padding:15px;
+            border:1px solid #ddd;
+            text-align:center;
+        }
+
+        table th{
+
+            background:#2563eb;
+            color:white;
+        }
+
+        h2{
+
+            margin-bottom:20px;
+            color:#0f172a;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media(max-width:768px){
+
+            .topbar{
+
+                flex-direction:column;
+                gap:20px;
+                text-align:center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+         TOPBAR
+    ========================== -->
+
+    <div class="topbar">
+
+        <h1>
+            Reports & Analytics Dashboard
+        </h1>
+
+        <a href="{{ url_for('logout') }}">
+
+            <button class="logout-btn">
+                Logout
+            </button>
+
+        </a>
+
+    </div>
+
+    <!-- =========================
+         ANALYTICS CARDS
+    ========================== -->
+
+    <div class="dashboard">
+
+        <div class="card">
+
+            <h1>₹ {{ revenue }}</h1>
+
+            <p>Total Revenue</p>
+
+        </div>
+
+        <div class="card">
+
+            <h1>{{ total_patients }}</h1>
+
+            <p>Total Patients</p>
+
+        </div>
+
+        <div class="card">
+
+            <h1>{{ total_doctors }}</h1>
+
+            <p>Total Doctors</p>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         BUTTONS
+    ========================== -->
+
+    <div class="btn-section">
+
+        <a href="{{ url_for('generate_report') }}">
+
+            <button class="btn">
+                Generate Analytics Report
+            </button>
+
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+
+            <button class="btn">
+                Back To Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+    <!-- =========================
+         DISEASE TRENDS
+    ========================== -->
+
+    <div class="table-container">
+
+        <h2>Disease Trends</h2>
+
+        <table>
+
+            <tr>
+
+                <th>Disease</th>
+                <th>Total Patients</th>
+
+            </tr>
+
+            {% for disease in disease_trends %}
+
+            <tr>
+
+                <td>{{ disease[0] }}</td>
+                <td>{{ disease[1] }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =========================
+         DOCTOR PERFORMANCE
+    ========================== -->
+
+    <div class="table-container">
+
+        <h2>Doctor Performance</h2>
+
+        <table>
+
+            <tr>
+
+                <th>Doctor Name</th>
+                <th>Total Patients Handled</th>
+
+            </tr>
+
+            {% for doctor in doctor_stats %}
+
+            <tr>
+
+                <td>{{ doctor[0] }}</td>
+                <td>{{ doctor[1] }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =========================
+         GENERATED REPORTS
+    ========================== -->
+
+    <div class="table-container">
+
+        <h2>Generated Reports</h2>
+
+        <table>
+
+            <tr>
+
+                <th>Report ID</th>
+                <th>Report Type</th>
+                <th>Generated By</th>
+                <th>Date</th>
+                <th>Revenue</th>
+                <th>Top Disease</th>
+                <th>Top Doctor</th>
+
+            </tr>
+
+            {% for report in reports %}
+
+            <tr>
+
+                <td>{{ report[1] }}</td>
+                <td>{{ report[2] }}</td>
+                <td>{{ report[3] }}</td>
+                <td>{{ report[4] }}</td>
+                <td>₹ {{ report[5] }}</td>
+                <td>{{ report[9] }}</td>
+                <td>{{ report[10] }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>

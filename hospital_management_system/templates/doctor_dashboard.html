@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="table-container">
+
+    <h1>Doctor Management</h1>
+
+    <a href="{{ url_for('add_doctor') }}" class="btn">Add Doctor</a>
+    <a href="{{ url_for('dashboard') }}" class="btn">Back</a>
+
+    <input 
+        type="text"
+        id="searchInput"
+        placeholder="Search doctor..."
+        class="search-box"
+    >
+
+    <table>
+
+        <tr>
+            <th>Doctor ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Specialization</th>
+            <th>Availability</th>
+            <th>Room</th>
+            <th>Portal</th>
+            <th>Action</th>
+        </tr>
+
+        {% for doctor in doctors %}
+
+        <tr class="doctor-row">
+            <td>{{ doctor[1] }}</td>
+            <td>{{ doctor[2] }}</td>
+            <td>{{ doctor[3] }}</td>
+            <td>{{ doctor[4] }}</td>
+            <td>{{ doctor[7] }}</td>
+            <td>{{ doctor[8] }}</td>
+            <td>
+
+                <a href="{{ url_for('doctor_portal_preview',
+                                     doctor_name=doctor[2]) }}"
+                   class="btn">
+                   View Portal
+                </a>
+            
+            </td>
+            <td>
+
+                <a href="{{ url_for('edit_doctor', id=doctor[0]) }}"
+                   class="btn">
+                   Edit
+                </a>
+            
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+<script>
+
+    const searchInput = document.getElementById('searchInput');
+    
+    searchInput.addEventListener('keyup', function() {
+    
+        const searchValue = searchInput.value.toLowerCase();
+    
+        const rows = document.querySelectorAll('.doctor-row');
+    
+        rows.forEach(row => {
+    
+            const rowText = row.innerText.toLowerCase();
+    
+            if(rowText.includes(searchValue)){
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+    
+        });
+    
+    });
+    
+</script>
+
+</body>
+</html>

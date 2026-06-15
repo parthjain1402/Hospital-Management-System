@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Appointment</title>
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial,sans-serif;
+    }
+
+    body{
+        background:#f4f7fc;
+    }
+
+    .container{
+        width:600px;
+        margin:50px auto;
+        background:white;
+        padding:30px;
+        border-radius:12px;
+        box-shadow:0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2{
+        color:#007bff;
+        margin-bottom:25px;
+        text-align:center;
+    }
+
+    label{
+        display:block;
+        margin-bottom:8px;
+        font-weight:bold;
+        color:#333;
+    }
+
+    input,
+    select{
+        width:100%;
+        padding:12px;
+        border:1px solid #ccc;
+        border-radius:6px;
+        margin-bottom:20px;
+    }
+
+    .btn{
+        background:#007bff;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:6px;
+        cursor:pointer;
+        width:100%;
+        font-size:16px;
+    }
+
+    .btn:hover{
+        background:#0056b3;
+    }
+
+    .back-btn{
+        display:block;
+        text-align:center;
+        margin-top:15px;
+        text-decoration:none;
+        color:#555;
+    }
+
+    .back-btn:hover{
+        color:#007bff;
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<div class="container">
+
+    <h2>Update Appointment</h2>
+
+    <form method="POST">
+
+        <label>Doctor</label>
+
+        <select id="doctor" name="doctor_name" required>
+
+            {% for doctor in doctors %}
+
+            <option value="{{ doctor[2] }}"
+                {% if doctor[2] == appointment['doctor_name'] %}
+                selected
+                {% endif %}
+            >
+                {{ doctor[2] }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>Date</label>
+
+        <input type="date"
+            id="appointment_date"
+            name="appointment_date"
+            value="{{ appointment['appointment_date'] }}"
+            min="{{ min_date }}"
+            max="{{ max_date }}"
+            required>
+
+        <label>Available Slot</label>
+
+        <select id="appointment_time"
+                name="appointment_time"
+                required>
+
+            <option value="{{ appointment['appointment_time'] }}" selected>
+                {{ appointment['appointment_time'] }}
+            </option>
+
+        </select>
+        
+
+        <button type="submit" class="btn">
+            Update Appointment
+        </button>
+
+    </form>
+
+    <a href="{{ url_for('patient_portal') }}"
+       class="back-btn">
+        ← Back to Patient Portal
+    </a>
+
+</div>
+```
+    <script>
+
+    function loadSlots() {
+
+        const doctor =
+            document.getElementById("doctor").value;
+
+        const date =
+            document.getElementById("appointment_date").value;
+
+        console.log("Doctor:", doctor);
+        console.log("Date:", date);
+
+        if(!doctor || !date)
+            return;
+
+        fetch(`/get_available_slots?doctor_name=${doctor}&appointment_date=${date}`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            console.log(data);
+
+            let slotDropdown =
+                document.getElementById("appointment_time");
+
+            slotDropdown.innerHTML =
+                '<option value="">Select Slot</option>';
+
+            data.slots.forEach(slot => {
+
+                slotDropdown.innerHTML +=
+                    `<option value="${slot}">${slot}</option>`;
+            });
+
+        });
+    }
+
+    document.getElementById("doctor")
+            .addEventListener("change", loadSlots);
+
+    document.getElementById("appointment_date")
+            .addEventListener("change", loadSlots);
+
+    window.onload = loadSlots;
+
+    </script>
+</body>
+
+</html>

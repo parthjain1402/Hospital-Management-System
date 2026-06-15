@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Add Maintenance</title>
+
+    <style>
+
+        body{
+            background:#f1f5f9;
+            font-family:Arial;
+        }
+
+        .form-container{
+
+            width:50%;
+            margin:auto;
+            margin-top:40px;
+
+            background:white;
+            padding:30px;
+
+            border-radius:15px;
+        }
+
+        input,
+        textarea,
+        select{
+
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+        }
+
+        button{
+
+            width:100%;
+            padding:15px;
+            margin-top:20px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>Add Maintenance Log</h1>
+
+        <form method="POST">
+
+            <select name="equipment_name">
+
+                {% for equipment in equipments %}
+
+                <option>{{ equipment[0] }}</option>
+
+                {% endfor %}
+
+            </select>
+
+            <input type="text" name="engineer_name" placeholder="Engineer Name" required>
+
+            <input type="text" name="maintenance_type" placeholder="Maintenance Type" required>
+
+            <input type="date" name="maintenance_date" required>
+
+            <input type="date" name="next_service_date" required>
+
+            <textarea name="remarks" placeholder="Remarks"></textarea>
+
+            <select name="status">
+
+                <option>Completed</option>
+                <option>Pending</option>
+
+            </select>
+
+            <button type="submit">
+                Add Maintenance
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

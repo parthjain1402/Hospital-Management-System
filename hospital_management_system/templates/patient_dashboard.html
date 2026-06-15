@@ -1,0 +1,391 @@
+<!-- templates/patient_dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f7fc;
+        }
+
+        .header{
+            background:#007bff;
+            color:white;
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .header h1{
+            font-size:28px;
+        }
+
+        .logout-btn{
+            background:red;
+            color:white;
+            padding:10px 20px;
+            text-decoration:none;
+            border-radius:5px;
+        }
+
+        .container{
+            width:95%;
+            margin:30px auto;
+        }
+
+        .top-buttons{
+            margin-bottom:20px;
+        }
+
+        .add-btn{
+            background:#28a745;
+            color:white;
+            padding:12px 20px;
+            text-decoration:none;
+            border-radius:6px;
+            font-size:16px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        table th{
+            background:#007bff;
+            color:white;
+            padding:15px;
+            text-align:left;
+        }
+
+        table td{
+            padding:14px;
+            border-bottom:1px solid #ddd;
+            vertical-align:top;
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        .btn{
+            padding:8px 12px;
+            text-decoration:none;
+            border-radius:5px;
+            color:white;
+            display:inline-block;
+            margin-bottom:5px;
+            font-size:14px;
+        }
+
+        .view-btn{
+            background:#007bff;
+        }
+
+        .emr-btn{
+            background:#28a745;
+        }
+
+        .delete-btn{
+            background:red;
+        }
+
+        .empty{
+            background:white;
+            padding:40px;
+            text-align:center;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .badge{
+            padding:5px 10px;
+            border-radius:20px;
+            color:white;
+            font-size:13px;
+        }
+
+        .emergency{
+            background:red;
+        }
+
+        .normal{
+            background:#28a745;
+        }
+        .back-btn{
+            background:#343a40;
+            color:white;
+            padding:12px 20px;
+            text-decoration:none;
+            border-radius:6px;
+            font-size:16px;
+            margin-left:10px;
+        }
+
+        #searchInput{
+            padding:12px 15px;
+            width:280px;
+            border:1px solid #ccc;
+            border-radius:6px;
+            margin-left:15px;
+            outline:none;
+            font-size:15px;
+            transition:0.3s;
+        }
+
+        #searchInput:focus{
+            border-color:#007bff;
+            box-shadow:0 0 5px rgba(0,123,255,0.3);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>Patient Dashboard</h1>
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+    <div class="container">
+
+        <div class="top-buttons">
+
+            <a href="/add_patient" class="add-btn">
+                + Add Patient
+            </a>
+        
+            <a href="/dashboard" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        
+            <input 
+                type="text"
+                id="searchInput"
+                placeholder="Search patient..."
+            >
+        
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div style="
+                        background:#d4edda;
+                        color:#155724;
+                        padding:15px;
+                        margin-bottom:20px;
+                        border-radius:5px;
+                    ">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        {% if patients %}
+
+        <table>
+
+            <tr>
+
+                <th>Patient ID</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Blood Group</th>
+                <th>Disease</th>
+                <th>Doctor</th>
+                <th>Admission</th>
+                <th>Actions</th>
+
+            </tr>
+
+            {% for patient in patients %}
+
+            <tr class="patient-row">
+
+                <td>{{ patient[1] }}</td>
+
+                <td>{{ patient[2] }}</td>
+
+                <td>{{ patient[3] }}</td>
+
+                <td>{{ patient[4] }}</td>
+
+                <td>{{ patient[5] }}</td>
+
+                <td>{{ patient[7] }}</td>
+
+                <td>{{ patient[8] }}</td>
+
+                <td>{{ patient[9] }}</td>
+
+                <td>
+
+                    {% if patient[10] == 'Emergency' %}
+
+                        <span class="badge emergency">
+                            Emergency
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge normal">
+                            Normal
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a
+                        href="{{ url_for('edit_patient', id=patient[0]) }}"
+                        class="btn emr-btn"
+                    >
+                        Edit
+                    </a>
+                
+                    <br>
+                
+                    <a
+                        href="/delete_patient/{{ patient[0] }}"
+                        class="btn delete-btn"
+                        onclick="return confirm('Are you sure you want to delete this patient?')"
+                    >
+                        Delete
+                    </a>
+                
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+        <h2>Booked Appointments</h2>
+
+        <table>
+
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Slot</th>
+            <th>Status</th>
+            <th>Billing</th>
+        </tr>
+
+        {% for appointment in appointments %}
+
+        <tr>
+
+            <td>{{ appointment[3] }}</td>
+            <td>{{ appointment[4] }}</td>
+            <td>{{ appointment[5] }}</td>
+            <td>{{ appointment[6] }}</td>
+            <td>{{ appointment[7] }}</td>
+
+            <td>
+
+                {% if appointment[7] in ['Confirmed', 'Completed', 'Follow-Up'] %}
+            
+                    <span style="
+                        background:#28a745;
+                        color:white;
+                        padding:8px 14px;
+                        border-radius:6px;
+                        font-weight:bold;
+                    ">
+                        Paid
+                    </span>
+            
+                {% else %}
+            
+                    <a href="{{ url_for(
+                        'add_bill',
+                        patient_id=appointment[10]
+                    ) }}"
+                    class="btn emr-btn">
+                        Generate Bill
+                    </a>
+            
+                {% endif %}
+            
+            </td>
+
+        </tr>
+        {% endfor %}
+
+        </table>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>No Patients Found</h2>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+<script>
+
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('keyup', function() {
+
+    const searchValue = searchInput.value.toLowerCase();
+
+    const rows = document.querySelectorAll('.patient-row');
+
+    rows.forEach(row => {
+
+        const rowText = row.innerText.toLowerCase();
+
+        if(rowText.includes(searchValue)){
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+
+    });
+
+});
+
+</script>
+</body>
+</html>

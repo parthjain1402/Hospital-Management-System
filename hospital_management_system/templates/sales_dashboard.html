@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales Dashboard</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f1f5f9;
+            padding:30px;
+        }
+
+        h1{
+            margin-bottom:20px;
+            color:#2563eb;
+        }
+
+        table{
+
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th, td{
+
+            padding:15px;
+            border:1px solid #ddd;
+            text-align:center;
+        }
+
+        th{
+
+            background:#2563eb;
+            color:white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Medicine Sales Records</h1>
+
+    <table>
+
+        <tr>
+
+            <th>Sale ID</th>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Prescription</th>
+            <th>Sale Date</th>
+
+        </tr>
+
+        {% for sale in sales %}
+
+        <tr>
+
+            <td>{{ sale[1] }}</td>
+            <td>{{ sale[2] }}</td>
+            <td>{{ sale[3] }}</td>
+            <td>{{ sale[4] }}</td>
+            <td>{{ sale[5] }}</td>
+            <td>₹ {{ sale[6] }}</td>
+            <td>{{ sale[7] }}</td>
+            <td>{{ sale[8] }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</body>
+
+</html>

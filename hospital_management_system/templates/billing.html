@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Billing Dashboard</title>
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h2>🏥 HMS</h2>
+
+        <img src="/{{ session['image'] }}"
+             alt="Profile"
+             class="profile-img">
+
+        <h3>{{ session['user'] }}</h3>
+
+        <p>{{ session['role'] }}</p>
+
+        <a href="{{ url_for('dashboard') }}">
+            📊 Dashboard
+        </a>
+
+        <a href="{{ url_for('patient_dashboard') }}">
+            🧑‍⚕️ Patients
+        </a>
+
+        <a href="{{ url_for('doctor_dashboard') }}">
+            👨‍⚕️ Doctors
+        </a>
+
+        <a href="{{ url_for('appointments') }}">
+            📅 Appointments
+        </a>
+
+        <a href="{{ url_for('billing_dashboard') }}">
+            💳 Billing
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <div class="table-container">
+
+            <h1>Billing Dashboard</h1>
+
+            <a href="{{ url_for('add_bill') }}"
+               class="btn">
+               + Generate Invoice
+            </a>
+
+            <input 
+                type="text"
+                id="searchInput"
+                placeholder="Search bill..."
+                class="search-box"
+            >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Invoice ID</th>
+
+                        <th>Patient ID</th>
+
+                        <th>Patient Name</th>
+
+                        <th>Total Amount</th>
+
+                        <th>Payment Method</th>
+
+                        <th>Payment Status</th>
+
+                        <th>Insurance</th>
+
+                        <th>Date</th>
+
+                        <th>Update Status</th>
+                        
+                        <th>Delete</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for bill in bills %}
+
+                    <tr class="bill-row">
+
+                        <td>{{ bill[1] }}</td>
+
+                        <td>{{ bill[2] }}</td>
+
+                        <td>{{ bill[3] }}</td>
+
+                        <td>₹ {{ bill[9] }}</td>
+
+                        <td>{{ bill[12] }}</td>
+
+                        <td>
+
+                            {% if bill[13] == 'Paid' %}
+                                <span class="paid">
+                                    {{ bill[13] }}
+                                </span>
+
+                            {% elif bill[13] == 'Pending' %}
+                                <span class="pending">
+                                    {{ bill[13] }}
+                                </span>
+
+                            {% else %}
+                                <span class="failed">
+                                    {{ bill[13] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>{{ bill[10] }}</td>
+
+                        <td>{{ bill[15] }}</td>
+
+                    
+                    <td>
+                        <form action="{{ url_for('update_payment',
+                                invoice_id=bill[1]) }}"
+                            method="POST">
+
+                            <select name="payment_status">
+                                <option value="Pending">Pending</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+
+                            <button type="submit">
+                                Update
+                            </button>
+
+                        </form>
+                    </td>
+
+                    <td>
+
+    <form action="{{ url_for('delete_bill',
+            invoice_id=bill[1]) }}"
+          method="POST"
+          onsubmit="return confirm('Are you sure you want to delete this invoice?');">
+
+        <button type="submit"
+                style="background:red;color:white;padding:8px 12px;border:none;border-radius:5px;cursor:pointer;">
+            Delete
+        </button>
+
+    </form>
+
+</td>
+
+                </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+    const searchInput = document.getElementById('searchInput');
+    
+    searchInput.addEventListener('keyup', function() {
+    
+        const searchValue = searchInput.value.toLowerCase();
+    
+        const rows = document.querySelectorAll('.bill-row');
+    
+        rows.forEach(row => {
+    
+            const rowText = row.innerText.toLowerCase();
+    
+            if(rowText.includes(searchValue)){
+                row.style.display = '';
+            } 
+            else{
+                row.style.display = 'none';
+            }
+    
+        });
+    
+    });
+    
+    </script>
+</body>
+</html>

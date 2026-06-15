@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Results</title>
+</head>
+<body>
+
+<h2>Lab Result Tracking</h2>
+
+<table border="1" cellpadding="10">
+
+<tr>
+    <th>Test ID</th>
+    <th>Patient</th>
+    <th>Test</th>
+    <th>Status</th>
+    <th>Report</th>
+    <th>Remarks</th>
+</tr>
+
+{% for result in results %}
+
+<tr>
+
+    <td>{{ result[1] }}</td>
+    <td>{{ result[3] }}</td>
+    <td>{{ result[4] }}</td>
+    <td>{{ result[8] }}</td>
+
+    <td>
+        {% if result[10] %}
+        <a href="/{{ result[10] }}" target="_blank">
+            View Report
+        </a>
+        {% else %}
+        Pending
+        {% endif %}
+    </td>
+
+    <td>{{ result[11] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

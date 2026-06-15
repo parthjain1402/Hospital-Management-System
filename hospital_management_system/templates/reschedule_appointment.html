@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reschedule Appointment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+
+    <h1>Reschedule Appointment</h1>
+
+    <form method="POST">
+
+        <label>New Appointment Date</label>
+        <input type="date" name="appointment_date" required>
+
+        <label>New Appointment Time</label>
+        <input type="time" name="appointment_time" required>
+
+        <button type="submit">Update Appointment</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

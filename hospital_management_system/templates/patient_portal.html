@@ -1,0 +1,939 @@
+<!-- templates/patient_portal.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Portal</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        .sidebar{
+            width:260px;
+            height:100vh;
+            background:#0f172a;
+            position:fixed;
+            left:0;
+            top:0;
+            padding:20px;
+            color:white;
+        }
+
+        .sidebar h2{
+            margin-bottom:40px;
+            text-align:center;
+            color:#38bdf8;
+        }
+
+        .sidebar a{
+            display:block;
+            color:white;
+            text-decoration:none;
+            padding:14px;
+            border-radius:8px;
+            margin-bottom:10px;
+            transition:0.3s;
+        }
+
+        .sidebar a:hover{
+            background:#1e293b;
+        }
+
+        .main{
+            margin-left:260px;
+            padding:25px;
+        }
+
+        .topbar{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .profile{
+            display:flex;
+            align-items:center;
+            gap:15px;
+        }
+
+        .profile img{
+            width:55px;
+            height:55px;
+            border-radius:50%;
+            object-fit:cover;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:20px;
+            margin-top:25px;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            border-radius:14px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .card h3{
+            margin-bottom:12px;
+            color:#0f172a;
+        }
+
+        .card p{
+            color:#475569;
+            line-height:1.7;
+        }
+
+        .section{
+            background:white;
+            padding:25px;
+            border-radius:14px;
+            margin-top:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section h2{
+            margin-bottom:20px;
+            color:#0f172a;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        table th{
+            background:#0f172a;
+            color:white;
+            padding:14px;
+            text-align:left;
+        }
+
+        table td{
+            padding:14px;
+            border-bottom:1px solid #e2e8f0;
+        }
+
+        .form-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        input, select, textarea{
+            width:100%;
+            padding:12px;
+            border:1px solid #cbd5e1;
+            border-radius:8px;
+            margin-top:8px;
+        }
+
+        button{
+            background:#0ea5e9;
+            color:white;
+            border:none;
+            padding:14px 24px;
+            border-radius:8px;
+            cursor:pointer;
+            margin-top:20px;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#0284c7;
+        }
+
+        .logout{
+            background:#ef4444;
+        }
+
+        .logout:hover{
+            background:#dc2626;
+        }
+
+        .badge{
+            padding:6px 12px;
+            border-radius:30px;
+            font-size:13px;
+            color:white;
+            background:#22c55e;
+        }
+
+        @media(max-width:768px){
+
+            .sidebar{
+                width:100%;
+                height:auto;
+                position:relative;
+            }
+
+            .main{
+                margin-left:0;
+            }
+
+            .cards{
+                grid-template-columns:1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>Patient Portal</h2>
+
+        <a href="#">Dashboard</a>
+        <a href="#profile">My Profile</a>
+        <a href="#appointments">Appointments</a>
+        <a href="#reports">Lab Reports</a>
+        <a href="#billing">Billing</a>
+        <a href="#emr">Medical Records</a>
+
+        <a href="{{ url_for('logout') }}" class="logout">
+            Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+                <h1>Welcome, {{ patient.full_name }}</h1>
+                <p>Hospital Patient Management Portal</p>
+            </div>
+
+            <div class="profile">
+
+                <img src="/static/default_user.png">
+
+                <div>
+                    <h3>{{ patient.full_name }}</h3>
+                    <p>Patient</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Patient ID</h3>
+                <p>{{ patient.patient_id }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Admission Type</h3>
+                <p>{{ patient.admission_type or 'N/A' }}</p>
+            </div>
+
+        </div>
+
+        <!-- PROFILE SECTION -->
+
+        <div class="section" id="profile">
+
+            <h2>Update Personal Information</h2>
+
+            <form action="{{ url_for('update_patient_profile') }}" method="POST">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Age</label>
+                        <input type="number"
+                               name="age"
+                               value="{{ patient.age }}">
+                    </div>
+
+                    <div>
+                        <label>Gender</label>
+
+                        <select name="gender">
+
+                            <option value="">Select</option>
+
+                            <option value="Male"
+                            {% if patient.gender == 'Male' %}
+                            selected
+                            {% endif %}
+                            >Male</option>
+
+                            <option value="Female"
+                            {% if patient.gender == 'Female' %}
+                            selected
+                            {% endif %}
+                            >Female</option>
+
+                        </select>
+
+                    </div>
+
+                    <div>
+                        <label>Phone</label>
+                        <input type="text"
+                               name="phone"
+                               value="{{ patient.phone }}">
+                    </div>
+
+                    <div>
+                        <label>Blood Group</label>
+                        <input type="text"
+                               name="blood_group"
+                               value="{{ patient.blood_group }}">
+                    </div>
+
+                    <div>
+                        <label>Emergency Contact</label>
+                        <input type="text"
+                               name="emergency_contact"
+                               value="{{ patient.emergency_contact }}">
+                    </div>
+
+                    <div>
+                        <label>Insurance Provider</label>
+                        <input type="text"
+                               name="insurance_provider"
+                               value="{{ patient.insurance_provider }}">
+                    </div>
+
+                    <div>
+                        <label>Insurance Number</label>
+                        <input type="text"
+                               name="insurance_number"
+                               value="{{ patient.insurance_number }}">
+                    </div>
+
+                </div>
+
+                <div style="margin-top:20px;">
+
+                    <label>Address</label>
+
+                    <textarea name="address"
+                              rows="4">{{ patient.address }}</textarea>
+
+                </div>
+
+                <button type="submit">
+                    Update Profile
+                </button>
+
+            </form>
+
+        </div>
+        <div class="section" id="appointments">
+
+            <h2>Book Appointment</h2>
+
+            <form action="{{ url_for('book_patient_appointment') }}" method="POST">
+
+                <div class="form-grid">
+
+                    <div>
+
+                        <label>Disease</label>
+
+                        <select id="disease"
+                                name="disease"
+                                required
+                                onchange="filterDoctors()">
+
+                            <option value="">Select Disease</option>
+
+                            <option value="Heart Disease">Heart Disease</option>
+                            <option value="Diabetes">Diabetes</option>
+                            <option value="Asthma">Asthma</option>
+                            <option value="Migraine">Migraine</option>
+                            <option value="Fracture">Fracture</option>
+                            <option value="Skin Infection">Skin Infection</option>
+
+                        </select>
+
+                    </div>
+
+                    <div>
+
+                        <label>Doctor</label>
+
+                        <select id="doctor"
+                            name="doctor_name"
+                            required
+                            onchange="loadSlots()">
+
+                            <option value="">Select Doctor</option>
+
+                            {% for doctor in doctors %}
+
+                            <option
+                                value="{{ doctor[2] }}"
+                                data-specialization="{{ doctor[4] }}">
+
+                                {{ doctor[2] }} - {{ doctor[4] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div>
+
+                        <label>Appointment Date</label>
+
+                        <input type="date"
+                            id="appointment_date"
+                            name="appointment_date"
+                            required
+                            readonly>
+
+                    </div>
+
+                    <div>
+
+                        <label>Available Slots</label>
+
+                        <select id="appointment_time"
+                                name="appointment_time"
+                                required>
+
+                            <option value="">Select Slot</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit">
+                    Book Appointment
+                </button>
+
+            </form>
+
+        </div>
+        <div class="section">
+
+            <h2>My Appointments</h2>
+
+            <table>
+
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for appt in my_appointments %}
+
+                <tr>
+                    <td>{{ appt['appointment_id'] }}</td>
+                    <td>{{ appt['doctor_name'] }}</td>
+                    <td>{{ appt['appointment_date'] }}</td>
+                    <td>{{ appt['appointment_time'] }}</td>
+                    <td>
+
+                        {% if appt['status'] == 'Completed' %}
+                    
+                            <span class="badge">
+                                Completed
+                            </span>
+                    
+                            <br><br>
+                    
+                            <a href="{{ url_for(
+                                    'download_prescription_pdf',
+                                    appointment_id=appt['appointment_id']
+                                ) }}"
+                               style="
+                                    background:#2563eb;
+                                    color:white;
+                                    padding:8px 14px;
+                                    border-radius:6px;
+                                    text-decoration:none;
+                                    display:inline-block;
+                               ">
+                    
+                                Download PDF
+                    
+                            </a>
+                    
+                            {% else %}
+
+                                {% if appt['status'] == 'Cancelled by Doctor' %}
+                            
+                                    <span style="
+                                        background:#ef4444;
+                                        color:white;
+                                        padding:6px 12px;
+                                        border-radius:20px;
+                                    ">
+                            
+                                        Cancelled by Doctor
+                            
+                                    </span>
+                            
+                                {% else %}
+                            
+                                    {{ appt['status'] }}
+                            
+                                {% endif %}
+                            
+                            {% endif %}
+                    
+                    </td>
+
+                    <td>
+
+                        <a href="{{ url_for('edit_appointment',
+                                            appointment_id=appt['appointment_id']) }}">
+
+                            Update
+
+                        </a>
+
+                        |
+
+                        <a href="{{ url_for('cancel_appointment',
+                                            appointment_id=appt['appointment_id']) }}"
+                        onclick="return confirm('Cancel Appointment?')">
+
+                            Cancel
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        <!-- MEDICAL RECORD -->
+
+        <div class="section" id="emr">
+
+            <h2>Medical Information</h2>
+
+            <table>
+
+                <tr>
+                    <th>Field</th>
+                    <th>Details</th>
+                </tr>
+
+                <tr>
+                    <td>Disease</td>
+                    <td>{{ patient.disease or 'Not Updated' }}</td>
+                </tr>
+
+                <tr>
+                    <td>Doctor Assigned</td>
+                    <td>{{ patient.doctor_assigned or 'Pending' }}</td>
+                </tr>
+
+                <tr>
+                    <td>Medical History</td>
+                    <td>{{ patient.medical_history or 'No History Available' }}</td>
+                </tr>
+
+                <tr>
+                    <td>Admission Date</td>
+                    <td>{{ patient.admission_date or 'N/A' }}</td>
+                </tr>
+
+                <tr>
+                    <td>Discharge Date</td>
+                    <td>{{ patient.discharge_date or 'N/A' }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- LAB REPORTS -->
+
+        <div class="section" id="reports">
+
+            <h2>Lab Reports</h2>
+
+            <table>
+
+                <tr>
+
+                    <th>Test ID</th>
+                    <th>Report Name</th>
+                    <th>Status</th>
+                    <th>Uploaded Date</th>
+                    <th>Download</th>
+
+                </tr>
+
+                {% if lab_reports %}
+
+                    {% for report in lab_reports %}
+
+                    <tr>
+
+                        <td>{{ report[4] }}</td>
+
+                        <td>{{ report[0] }}</td>
+
+                        <td>
+
+                            {% if report[1] == 'Completed' %}
+
+                                <span class="badge">
+
+                                    Completed
+
+                                </span>
+
+                            {% else %}
+
+                                <span style="
+                                    background:orange;
+                                    color:white;
+                                    padding:6px 12px;
+                                    border-radius:20px;
+                                ">
+
+                                    Pending
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>{{ report[3] }}</td>
+
+                        <td>
+
+                            {% if report[2] %}
+                        
+                                <a
+                                    href="{{ url_for(
+                                        'download_lab_report',
+                                        filename=report[2]
+                                    ) }}"
+                                    style="
+                                        color:#2563eb;
+                                        font-weight:bold;
+                                        margin-right:15px;
+                                    "
+                                >
+                        
+                                    Download
+                        
+                                </a>
+                            
+                                    <form action="{{ url_for('share_report_with_doctor') }}"
+                                        method="POST"
+                                        style="display:inline-block;">
+
+                                    <input type="hidden"
+                                        name="filename"
+                                        value="{{ report[2] }}">
+
+                                    <input type="hidden"
+                                        name="report_name"
+                                        value="{{ report[0] }}">
+                                    
+                                        <select name="appointment_id" required>
+
+                                            <option value="">
+                                                Select Appointment
+                                            </option>
+
+                                            {% for appt in my_appointments %}
+
+                                            <option value="{{ appt['appointment_id'] }}">
+
+                                                {{ appt['appointment_id'] }}
+                                                | {{ appt['doctor_name'] }}
+                                                | {{ appt['appointment_time'] }}
+
+                                            </option>
+
+                                            {% endfor %}
+
+                                        </select>
+
+                                        <button type="submit"
+                                                style="
+                                                    background:#16a34a;
+                                                    color:white;
+                                                    border:none;
+                                                    padding:8px 14px;
+                                                    border-radius:6px;
+                                                    cursor:pointer;
+                                                ">
+
+                                            Confirm Share
+
+
+
+                                    
+
+                                </form>
+                        
+                            {% endif %}
+                        
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            No Laboratory Reports Available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </table>
+
+</div>
+
+        <!-- BILLING -->
+
+        <div class="section" id="billing">
+
+            <h2>Billing Information</h2>
+
+            <table>
+
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Total Amount</th>
+                    <th>Payment Status</th>
+                    <th>Download</th>
+                </tr>
+
+                {% for bill in bills %}
+
+                <tr>
+
+                    <td>{{ bill[1] }}</td>
+
+                    <td>₹ {{ bill[9] }}</td>
+
+                    <td>
+
+                        {% if bill[13] == 'Paid' %}
+                            <span class="badge">
+                                Paid
+                            </span>
+                        {% else %}
+                            <span style="color:red;">
+                                Pending
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if bill['payment_status'] == 'Paid' %}
+
+                            <a href="{{ url_for('download_invoice',
+                                                invoice_id=bill['invoice_id']) }}">
+                                Download PDF
+                            </a>
+
+                            {% else %}
+
+                            Payment Pending
+
+                            {% endif %}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+    <h2>My Bills</h2>
+
+
+    <script>
+
+        function filterDoctors() {
+
+            const disease =
+                document.getElementById("disease").value;
+
+            const doctorDropdown =
+                document.getElementById("doctor");
+
+            const options =
+                doctorDropdown.options;
+
+            let requiredSpecialization = "";
+
+            if (disease === "Heart Disease")
+                requiredSpecialization = "Cardiologist";
+
+            else if (disease === "Diabetes")
+                requiredSpecialization = "Endocrinologist";
+
+            else if (disease === "Asthma")
+                requiredSpecialization = "Pulmonologist";
+
+            else if (disease === "Migraine")
+                requiredSpecialization = "Neurologist";
+
+            else if (disease === "Fracture")
+                requiredSpecialization = "Orthopedic";
+
+            else if (disease === "Skin Infection")
+                requiredSpecialization = "Dermatologist";
+
+            for(let i=0; i<options.length; i++) {
+
+                if(i===0) continue;
+
+                const specialization =
+                    options[i].getAttribute("data-specialization");
+
+                if(specialization === requiredSpecialization)
+                    options[i].style.display = "";
+
+                else
+                    options[i].style.display = "none";
+            }
+
+            doctorDropdown.selectedIndex = 0;
+
+            document.getElementById("appointment_time").innerHTML =
+                '<option value="">Select Slot</option>';
+        }
+
+        function loadSlots() {
+
+            const doctor =
+                document.getElementById("doctor").value;
+
+            const date =
+                document.getElementById("appointment_date").value;
+
+            if(!doctor || !date)
+                return;
+
+            fetch(
+                `/get_available_slots?doctor_name=${doctor}&appointment_date=${date}`
+            )
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                let slotDropdown =
+                    document.getElementById("appointment_time");
+
+                slotDropdown.innerHTML =
+                    '<option value="">Select Slot</option>';
+
+                data.slots.forEach(slot => {
+
+                    slotDropdown.innerHTML += `
+                        <option value="${slot}">
+                            ${slot}
+                        </option>
+                    `;
+                });
+
+            });
+        }
+
+        document.getElementById("doctor")
+                .addEventListener("change", function() {
+
+            loadSlots();
+
+        });
+
+        document.getElementById("appointment_date")
+                .addEventListener("change", function() {
+
+            loadSlots();
+
+        });
+        // AUTO SET CURRENT DATE
+        window.onload = function () {
+
+        const today = new Date();
+
+        const yyyy = today.getFullYear();
+
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+
+        const dd = String(today.getDate()).padStart(2, '0');
+
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+        document.getElementById("appointment_date").value = formattedDate;
+
+        // load slots automatically if doctor already selected
+        loadSlots();
+        };
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Laboratory Reports</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f4f6f9;
+            padding:30px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            margin-bottom:20px;
+        }
+
+        .btn{
+            padding:10px 15px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            color:white;
+            text-decoration:none;
+        }
+
+        .upload{
+            background:#2563eb;
+        }
+
+        .download{
+            background:#16a34a;
+        }
+
+        .pending{
+            color:orange;
+            font-weight:bold;
+        }
+
+        .completed{
+            color:green;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Laboratory Reports</h1>
+
+
+
+<div class="card">
+
+    <h3>Patient ID: {{ test[2] }}</h3>
+
+    <h3>Patient Name: {{ test[3] }}</h3>
+
+    <h3>Test Name: {{ test[4] }}</h3>
+
+    <br>
+
+    <a
+        href="{{ url_for('upload_lab_report', test_id=test[1]) }}"
+        class="btn upload"
+        style="margin-right:15px;"
+    >
+        Upload Report
+    </a>
+
+    <a href="{{ url_for('lab_dashboard') }}" class="btn" style=" background:#0f172a; margin-bottom:20px; display:inline-block; "> ← Back To Dashboard </a>
+
+</div>
+
+{% if reports %}
+
+    {% for report in reports %}
+
+    <div class="card">
+
+        
+        <h3>{{ report[3] }}</h3>
+
+        <p>
+
+            Uploaded On:
+
+            <strong>
+
+                {{ report[6] }}
+
+            </strong>
+
+        </p>
+
+
+
+        <p>
+
+            Status:
+
+            {% if report[5] == 'Completed' %}
+
+                <span class="completed">
+                    Completed
+                </span>
+
+            {% else %}
+
+                <span class="pending">
+                    Pending
+                </span>
+
+            {% endif %}
+
+        </p>
+
+        {% if report[4] %}
+
+            <br>
+
+            <a
+                href="{{ url_for('download_lab_report', filename=report[4]) }}"
+                class="btn download"
+            >
+                Download File
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="card">
+
+        <h3>No Reports Uploaded Yet</h3>
+
+    </div>
+
+{% endif %}
+
+</body>
+</html>

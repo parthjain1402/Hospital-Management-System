@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View EMR</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f7fc;
+            padding:30px;
+        }
+
+        .container{
+            width:90%;
+            margin:auto;
+        }
+
+        h1{
+            color:#007bff;
+            margin-bottom:20px;
+        }
+
+        .top-box{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            margin-bottom:20px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .record-card{
+            background:white;
+            padding:25px;
+            margin-bottom:25px;
+            border-radius:12px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .section{
+            margin-top:18px;
+        }
+
+        .section h3{
+            color:#007bff;
+            margin-bottom:10px;
+        }
+
+        .file-link{
+            display:inline-block;
+            margin-top:10px;
+            background:#28a745;
+            color:white;
+            padding:10px 18px;
+            text-decoration:none;
+            border-radius:6px;
+        }
+
+        .file-link:hover{
+            background:#1e7e34;
+        }
+
+        .date{
+            float:right;
+            color:gray;
+        }
+
+        .back-btn{
+            text-decoration:none;
+            background:#007bff;
+            color:white;
+            padding:10px 18px;
+            border-radius:6px;
+            float:right;
+        }
+
+        .empty{
+            background:white;
+            padding:30px;
+            text-align:center;
+            border-radius:10px;
+            color:gray;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/patient_dashboard" class="back-btn">
+        Back
+    </a>
+
+    <h1>Electronic Medical Records</h1>
+
+    <div class="top-box">
+
+        <h2>{{ patient[2] }}</h2>
+
+        <br>
+
+        <p><strong>Patient ID:</strong> {{ patient[1] }}</p>
+
+        <p><strong>Age:</strong> {{ patient[3] }}</p>
+
+        <p><strong>Gender:</strong> {{ patient[4] }}</p>
+
+        <p><strong>Blood Group:</strong> {{ patient[7] }}</p>
+
+        <p><strong>Disease:</strong> {{ patient[8] }}</p>
+
+        <p><strong>Doctor Assigned:</strong> {{ patient[9] }}</p>
+
+    </div>
+
+    {% if records %}
+
+        {% for record in records %}
+
+        <div class="record-card">
+
+            <span class="date">
+                {{ record[8] }}
+            </span>
+
+            <div class="section">
+
+                <h3>Diagnosis History</h3>
+
+                <p>{{ record[2] }}</p>
+
+            </div>
+
+            <div class="section">
+
+                <h3>Treatment History</h3>
+
+                <p>{{ record[3] }}</p>
+
+            </div>
+
+            <div class="section">
+
+                <h3>Prescriptions</h3>
+
+                <p>{{ record[4] }}</p>
+
+            </div>
+
+            <div class="section">
+
+                <h3>Allergies</h3>
+
+                <p>{{ record[5] }}</p>
+
+            </div>
+
+            <div class="section">
+
+                <h3>Medical Reports</h3>
+
+                <p>{{ record[6] }}</p>
+
+            </div>
+
+            {% if record[7] %}
+
+            <div class="section">
+
+                <h3>X-ray / MRI / Reports File</h3>
+
+                <a
+                    href="/{{ record[7] }}"
+                    target="_blank"
+                    class="file-link"
+                >
+                    View Uploaded File
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No EMR Records Found</h2>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

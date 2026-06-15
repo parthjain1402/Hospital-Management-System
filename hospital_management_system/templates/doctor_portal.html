@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Portal</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        .sidebar{
+            width:260px;
+            height:100vh;
+            background:#0f172a;
+            position:fixed;
+            left:0;
+            top:0;
+            padding:20px;
+            color:white;
+        }
+
+        .sidebar h2{
+            text-align:center;
+            margin-bottom:40px;
+            color:#38bdf8;
+        }
+
+        .sidebar a{
+            display:block;
+            color:white;
+            text-decoration:none;
+            padding:14px;
+            border-radius:8px;
+            margin-bottom:10px;
+        }
+
+        .sidebar a:hover{
+            background:#1e293b;
+        }
+
+        .main{
+            margin-left:260px;
+            padding:25px;
+        }
+
+        .topbar{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom:25px;
+        }
+
+        .section{
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            margin-bottom:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section h2{
+            margin-bottom:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        table th{
+            background:#0f172a;
+            color:white;
+            padding:14px;
+            text-align:left;
+        }
+
+        table td{
+            padding:14px;
+            border-bottom:1px solid #e2e8f0;
+        }
+
+        input, textarea{
+            width:100%;
+            padding:10px;
+            margin-top:8px;
+            border:1px solid #cbd5e1;
+            border-radius:8px;
+        }
+
+        button{
+            background:#0ea5e9;
+            color:white;
+            border:none;
+            padding:12px 18px;
+            border-radius:8px;
+            margin-top:10px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0284c7;
+        }
+
+        .logout{
+            background:#ef4444;
+        }
+
+        .logout:hover{
+            background:#dc2626;
+        }
+
+      
+        .view-btn{
+
+            display:inline-block;
+            background:#2563eb;
+            color:white;
+            padding:10px 16px;
+            border-radius:6px;
+            text-decoration:none;
+            white-space:nowrap;
+            text-align:center;
+            transition:0.3s;
+        }
+
+        .view-btn:hover{
+
+            background:#1d4ed8;
+        }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>Doctor Portal</h2>
+
+        <a href="#">Dashboard</a>
+        <a href="#patients">Patients</a>
+        <a href="#appointments">Appointments</a>
+        <a href="#emr">EMR Records</a>
+
+        <a href="{{ url_for('logout') }}"
+           class="logout">
+           Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <h1>Welcome Dr. {{ doctor_name }}</h1>
+            <p>Hospital Doctor Management Portal</p>
+
+        </div>
+
+        <!-- PATIENTS -->
+
+        <div class="section" id="patients">
+
+            <h2>Assigned Patients</h2>
+
+            <table>
+
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Disease</th>
+                    <th>Diagnosis</th>
+                    <th>Prescription</th>
+                    <th>Lab Test</th>
+                    <th>Reports</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+
+             
+                {% for patient in patients %}
+
+                <tr>
+
+                <form action="{{ url_for('complete_appointment',
+                                        appointment_id=patient.appointment_id) }}"
+                    method="POST">
+
+                    <td>{{ patient.patient_id }}</td>
+
+                    <td>{{ patient.full_name }}</td>
+
+                    <td>{{ patient.disease }}</td>
+
+                    <!-- Diagnosis -->
+                    <td>
+
+                        <input type="text"
+                            name="diagnosis"
+                            placeholder="Diagnosis">
+
+                        <textarea name="medical_history"
+                                rows="3"
+                                placeholder="Medical History"></textarea>
+
+                    </td>
+
+                    <!-- Prescription -->
+                    <td>
+
+                        <textarea name="prescription"
+                                rows="3"
+                                placeholder="Prescription"></textarea>
+
+                    </td>
+
+                    <!-- Lab Test -->
+                    <td>
+
+                        <textarea name="lab_test"
+                                rows="3"
+                                placeholder="Lab Test"></textarea>
+
+                    </td>
+
+                    <!-- Reports -->
+                    <td>
+
+                        <a href="{{ url_for(
+                                'doctor_view_shared_reports',
+                                appointment_id=patient.appointment_id
+                            ) }}"
+                        class="view-btn">
+                            View Reports
+                        </a>
+
+                    </td>
+
+                    <td>{{ patient.appointment_date }}</td>
+
+                    <td>{{ patient.appointment_time }}</td>
+
+                    <td>
+
+                        <!-- DONE BUTTON -->
+                    
+                        <button type="submit"
+                                style="background:green;">
+                    
+                            Done
+                    
+                        </button>
+                    
+                        <br><br>
+                    
+                        <!-- NOT DONE BUTTON -->
+                    
+                        <a href="{{ url_for(
+                                'doctor_cancel_appointment',
+                                appointment_id=patient.appointment_id
+                            ) }}"
+                           onclick="return confirm('Cancel this appointment?')"
+                           style="
+                                background:#ef4444;
+                                color:white;
+                                padding:10px 14px;
+                                border-radius:6px;
+                                text-decoration:none;
+                                display:inline-block;
+                           ">
+                    
+                            Not Done
+                    
+                        </a>
+                    
+                    </td>
+
+                </form>
+
+                </tr>
+
+                {% endfor %}
+
+
+
+            </table>
+
+        </div>
+
+        <!-- APPOINTMENTS -->
+
+        <div class="section" id="appointments">
+
+            <h2>Appointments</h2>
+
+            <table>
+
+                <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+
+                {% for appointment in appointments %}
+
+                <tr>
+
+                    <td>{{ appointment.patient_name }}</td>
+                    <td>{{ appointment.appointment_date }}</td>
+                    <td>{{ appointment.appointment_time }}</td>
+
+                    
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

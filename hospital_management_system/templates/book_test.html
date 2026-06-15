@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Laboratory Test</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            padding:40px;
+        }
+
+        .container{
+            max-width:700px;
+            margin:auto;
+        }
+
+        .form-card{
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            margin-bottom:25px;
+            color:#333;
+            text-align:center;
+        }
+
+        .form-group{
+            margin-bottom:20px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+            color:#444;
+        }
+
+        input,
+        select{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:15px;
+        }
+
+        input:focus,
+        select:focus{
+            outline:none;
+            border-color:#007bff;
+        }
+
+        .submit-btn{
+            width:100%;
+            background:#007bff;
+            color:white;
+            border:none;
+            padding:14px;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .submit-btn:hover{
+            background:#0056b3;
+        }
+
+        .back-btn{
+            display:inline-block;
+            margin-bottom:20px;
+            text-decoration:none;
+            color:#007bff;
+            font-weight:bold;
+        }
+
+        .back-btn:hover{
+            text-decoration:underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('lab_dashboard') }}"
+       class="back-btn">
+
+       ← Back to Dashboard
+
+    </a>
+
+    <div class="form-card">
+
+        <h2>Book Laboratory Test</h2>
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label>Patient</label>
+
+                <select name="patient_id" required>
+
+                    {% for patient in patients %}
+
+                    <option value="{{ patient[0] }}">
+
+                        {{ patient[1] }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Patient Name</label>
+
+                <input type="text"
+                       name="patient_name"
+                       placeholder="Enter patient name"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Test Name</label>
+
+                <input type="text"
+                       name="test_name"
+                       placeholder="Enter test name"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Doctor Name</label>
+
+                <select name="doctor_name">
+
+                    {% for doctor in doctors %}
+
+                    <option value="{{ doctor[0] }}">
+
+                        {{ doctor[0] }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Test Date</label>
+
+                <input type="date"
+                       name="test_date"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Technician Name</label>
+
+                <input type="text"
+                       name="technician_name"
+                       placeholder="Enter technician name"
+                       required>
+
+            </div>
+
+            <button type="submit"
+                    class="submit-btn">
+
+                Book Test
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

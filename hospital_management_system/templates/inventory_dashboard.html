@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        .topbar{
+
+            background:#0f172a;
+            color:white;
+            padding:20px;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logout-btn{
+
+            background:red;
+            color:white;
+            padding:10px 20px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        .container{
+
+            width:95%;
+            margin:auto;
+            margin-top:40px;
+        }
+
+        .add-btn{
+
+            background:#2563eb;
+            color:white;
+            padding:12px 20px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            margin-bottom:20px;
+        }
+
+        table{
+
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        table th,
+        table td{
+
+            padding:15px;
+            border:1px solid #ddd;
+            text-align:center;
+        }
+
+        table th{
+
+            background:#2563eb;
+            color:white;
+        }
+
+        .delete-btn{
+
+            background:red;
+            color:white;
+            padding:8px 15px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="topbar">
+
+        <h1>Inventory Dashboard</h1>
+
+        <a href="{{ url_for('logout') }}">
+            <button class="logout-btn">Logout</button>
+        </a>
+
+    </div>
+
+    <div class="container">
+
+        <a href="{{ url_for('add_equipment') }}">
+            <button class="add-btn">
+                Add Equipment
+            </button>
+        </a>
+
+        <a href="{{ url_for('vendor_dashboard') }}"> 
+            <button class="add-btn"> 
+                Vendor Dashboard 
+            </button>
+        </a>
+
+        <a href="{{ url_for('purchase_orders') }}"> <button class="add-btn"> Purchase Orders </button> </a>
+
+        <a href="{{ url_for('maintenance_dashboard') }}"> <button class="add-btn"> Maintenance Dashboard </button> </a>
+
+        <table>
+
+            <tr>
+
+                <th>Equipment ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Condition</th>
+                <th>Action</th>
+
+            </tr>
+
+            {% for equipment in equipments %}
+
+            <tr>
+
+                <td>{{ equipment[1] }}</td>
+                <td>{{ equipment[2] }}</td>
+                <td>{{ equipment[3] }}</td>
+                <td>{{ equipment[4] }}</td>
+                <td>{{ equipment[5] }}</td>
+                <td>{{ equipment[9] }}</td>
+                <td>{{ equipment[6] }}</td>
+
+                <td>
+
+                    <a href="/delete_equipment/{{ equipment[0] }}">
+
+                        <button class="delete-btn">
+                            Delete
+                        </button>
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>

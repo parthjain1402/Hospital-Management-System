@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ward & Bed Management</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f1f5f9;
+        }
+
+        /* TOPBAR */
+        .topbar{
+            background:#0f172a;
+            color:white;
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .topbar a{
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        /* PAGE CONTAINER */
+        .container{
+            width:95%;
+            margin:auto;
+            margin-top:30px;
+        }
+
+        /* BUTTON */
+        .add-btn{
+            background:#2563eb;
+            color:white;
+            padding:12px 20px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            margin-bottom:20px;
+        }
+
+        .add-btn:hover{
+            background:#1d4ed8;
+        }
+
+        /* TABLE */
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th{
+            background:#2563eb;
+            color:white;
+            padding:15px;
+            text-align:left;
+        }
+
+        td{
+            padding:15px;
+            border-bottom:1px solid #ddd;
+        }
+
+        tr:hover{
+            background:#f1f5f9;
+        }
+
+        .status{
+            padding:6px 10px;
+            border-radius:8px;
+            color:white;
+            font-size:12px;
+        }
+
+        .admitted{ background:green; }
+        .discharged{ background:red; }
+
+        a.action{
+            color:#2563eb;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        .search-box{
+            width:320px;
+            padding:12px 15px;
+            margin-bottom:20px;
+            border:1px solid #ccc;
+            border-radius:10px;
+            outline:none;
+            font-size:15px;
+            transition:0.3s;
+        }
+
+        .search-box:focus{
+            border-color:#2563eb;
+            box-shadow:0 0 5px rgba(37,99,235,0.3);
+        }
+
+        .ward-row{
+            transition:0.2s;
+        }
+
+        .ward-row:hover{
+            background:#f5f9ff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+    <h2>Ward & Bed Management</h2>
+
+    <a href="{{ url_for('dashboard') }}">⬅ Back Dashboard</a>
+</div>
+
+<div class="container">
+
+    <a href="{{ url_for('add_ward') }}">
+        <button class="add-btn">+ Assign Ward / Bed</button>
+    </a>
+
+    <input 
+        type="text"
+        id="searchInput"
+        placeholder="Search ward or patient..."
+        class="search-box"
+    >
+
+    <table>
+
+        <tr>
+            <th>Ward ID</th>
+            <th>Patient</th>
+            <th>Ward Type</th>
+            <th>Room</th>
+            <th>Bed</th>
+            <th>ICU</th>
+            <th>Status</th>
+            <th>Admission</th>
+            <th>Discharge</th>
+            <th>Action</th>
+        </tr>
+
+        {% for ward in wards %}
+        <tr class="ward-row">
+            <td>{{ ward[1] }}</td>
+            <td>{{ ward[3] }}</td>
+            <td>{{ ward[4] }}</td>
+            <td>{{ ward[5] }}</td>
+            <td>{{ ward[6] }}</td>
+            <td>{{ ward[8] }}</td>
+
+            <td>
+                {% if ward[7] == 'Admitted' %}
+                    <span class="status admitted">Admitted</span>
+                {% else %}
+                    <span class="status discharged">Discharged</span>
+                {% endif %}
+            </td>
+
+            <td>{{ ward[9] }}</td>
+            <td>{{ ward[10] }}</td>
+
+            <td>
+                {% if ward[7] == 'Admitted' %}
+                    <a class="action" href="{{ url_for('discharge_patient', ward_id=ward[1]) }}">
+                        Discharge
+                    </a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+<script>
+
+    const searchInput = document.getElementById('searchInput');
+    
+    searchInput.addEventListener('keyup', function() {
+    
+        const searchValue = searchInput.value.toLowerCase();
+    
+        const rows = document.querySelectorAll('.ward-row');
+    
+        rows.forEach(row => {
+    
+            const rowText = row.innerText.toLowerCase();
+    
+            if(rowText.includes(searchValue)){
+    
+                row.style.display = '';
+    
+            } 
+            else{
+    
+                row.style.display = 'none';
+    
+            }
+    
+        });
+    
+    });
+    
+    </script>
+</body>
+</html>

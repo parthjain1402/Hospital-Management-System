@@ -1,0 +1,249 @@
+<!-- templates/upload_report.html -->
+ 
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+ 
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>Upload Lab Report</title>
+ 
+    <style>
+ 
+        *{
+
+            margin:0;
+
+            padding:0;
+
+            box-sizing:border-box;
+
+            font-family:Arial, sans-serif;
+
+        }
+ 
+        body{
+
+            background:#f4f6f9;
+
+            padding:40px;
+
+        }
+ 
+        .container{
+ 
+            max-width:700px;
+
+            margin:auto;
+ 
+            background:white;
+
+            padding:35px;
+ 
+            border-radius:15px;
+ 
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+
+        }
+ 
+        h2{
+
+            text-align:center;
+
+            margin-bottom:25px;
+
+            color:#333;
+
+        }
+ 
+        .patient-box{
+ 
+            background:#f1f5ff;
+
+            padding:20px;
+
+            border-radius:10px;
+
+            margin-bottom:25px;
+
+        }
+ 
+        .patient-box p{
+
+            margin-bottom:10px;
+
+            color:#333;
+
+        }
+ 
+        form{
+
+            display:flex;
+
+            flex-direction:column;
+
+        }
+ 
+        label{
+
+            margin-bottom:8px;
+
+            font-weight:bold;
+
+            color:#444;
+
+        }
+ 
+        textarea,
+
+        input[type="file"]{
+ 
+            padding:12px;
+
+            border:1px solid #ccc;
+
+            border-radius:8px;
+
+            margin-bottom:20px;
+
+        }
+ 
+        textarea{
+
+            resize:none;
+
+            height:120px;
+
+        }
+ 
+        .btn-group{
+
+            display:flex;
+
+            gap:15px;
+
+        }
+ 
+        button{
+ 
+            flex:1;
+ 
+            padding:14px;
+ 
+            border:none;
+
+            border-radius:8px;
+ 
+            font-size:16px;
+
+            cursor:pointer;
+ 
+            transition:0.3s;
+
+        }
+ 
+        .upload-btn{
+ 
+            background:#007bff;
+
+            color:white;
+
+        }
+ 
+        .upload-btn:hover{
+
+            background:#0056b3;
+
+        }
+ 
+        .back-btn{
+ 
+            background:#28a745;
+
+            color:white;
+
+        }
+ 
+        .back-btn:hover{
+
+            background:#1e7e34;
+
+        }
+ 
+    </style>
+ 
+</head>
+ 
+<body>
+ 
+<div class="container">
+ 
+    <h2>Upload Laboratory Report</h2>
+ 
+    <!-- TEST DETAILS -->
+ 
+    <div class="patient-box">
+ 
+        <p><strong>Test ID :</strong> {{ test[1] }}</p>
+ 
+        <p><strong>Patient Name :</strong> {{ test[3] }}</p>
+ 
+        <p><strong>Test Name :</strong> {{ test[4] }}</p>
+ 
+        <p><strong>Doctor :</strong> {{ test[5] }}</p>
+ 
+    </div>
+ 
+    <!-- FORM -->
+ 
+    <form method="POST" enctype="multipart/form-data">
+ 
+        <label>Remarks</label>
+ 
+        <textarea name="remarks"
+
+                  placeholder="Enter report remarks..."></textarea>
+ 
+        <label>Upload Report File</label>
+ 
+        <input type="file"
+
+               name="report_file"
+
+               required>
+ 
+        <div class="btn-group">
+ 
+            <button type="submit"
+
+                    class="upload-btn">
+ 
+                Upload Report
+ 
+            </button>
+ 
+            <a href="{{ url_for('lab_dashboard') }}"
+
+               style="flex:1; text-decoration:none;">
+ 
+                <button type="button"
+
+                        class="back-btn">
+ 
+                    Back
+ 
+                </button>
+ 
+            </a>
+ 
+        </div>
+ 
+    </form>
+ 
+</div>
+ 
+</body>
+</html>
+ 

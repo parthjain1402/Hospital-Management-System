@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Pharmacy Dashboard</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f1f5f9;
+            padding:30px;
+        }
+
+        h1{
+            margin-bottom:25px;
+            color:#2563eb;
+        }
+
+        /* =========================
+           BUTTON SECTION
+        ========================== */
+
+        .button-container{
+
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+
+            margin-bottom:40px;
+        }
+
+        .nav-btn{
+
+            width:100%;
+            padding:15px;
+
+            background:#2563eb;
+            color:white;
+
+            border:none;
+            border-radius:10px;
+
+            font-size:16px;
+            cursor:pointer;
+
+            transition:0.3s;
+        }
+
+        .nav-btn:hover{
+            background:#1d4ed8;
+        }
+
+        a{
+            text-decoration:none;
+        }
+
+        /* =========================
+           TABLE SECTION
+        ========================== */
+
+        table{
+
+            width:100%;
+            background:white;
+            border-collapse:collapse;
+
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td{
+
+            padding:15px;
+            border:1px solid #ddd;
+            text-align:center;
+        }
+
+        th{
+            background:#2563eb;
+            color:white;
+        }
+
+        tr:hover{
+            background:#f8fafc;
+        }
+
+        .btn{
+
+            padding:8px 15px;
+            background:red;
+            color:white;
+            text-decoration:none;
+            border-radius:5px;
+        }
+
+        .btn:hover{
+            background:darkred;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Pharmacy Dashboard</h1>
+
+    <!-- =========================
+         NAVIGATION BUTTONS
+    ========================== -->
+
+    <div class="button-container">
+
+        <a href="{{ url_for('add_medicine') }}">
+
+            <button class="nav-btn">
+                Add Medicine
+            </button>
+
+        </a>
+
+        <a href="{{ url_for('sell_medicine') }}">
+
+            <button class="nav-btn">
+                Sell Medicine
+            </button>
+
+        </a>
+
+        <a href="{{ url_for('sales_dashboard') }}">
+
+            <button class="nav-btn">
+                Sales Dashboard
+            </button>
+
+        </a>
+
+        <a href="{{ url_for('stock_alerts') }}">
+
+            <button class="nav-btn">
+                Stock Alerts
+            </button>
+
+        </a>
+
+        <a href="{{ url_for('expiry_tracking') }}">
+
+            <button class="nav-btn">
+                Expiry Tracking
+            </button>
+
+        </a>
+
+    </div>
+
+    <!-- =========================
+         MEDICINE STOCK TABLE
+    ========================== -->
+
+    <table>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Medicine</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Expiry</th>
+            <th>Action</th>
+
+        </tr>
+
+        {% for medicine in medicines %}
+
+        <tr>
+
+            <td>{{ medicine[1] }}</td>
+
+            <td>{{ medicine[2] }}</td>
+
+            <td>{{ medicine[3] }}</td>
+
+            <td>{{ medicine[4] }}</td>
+
+            <td>{{ medicine[5] }}</td>
+
+            <td>₹ {{ medicine[6] }}</td>
+
+            <td>{{ medicine[7] }}</td>
+
+            <td>
+
+                <a href="{{ url_for('delete_medicine', id=medicine[0]) }}"
+                   class="btn">
+
+                    Delete
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
